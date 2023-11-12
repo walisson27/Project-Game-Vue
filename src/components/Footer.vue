@@ -87,5 +87,11 @@ a{
     gap: 20px;
   }
 }
+@media only screen and (max-width: 320px) {
+
+  ul {
+    gap: 8px;
+  }
+}
 
 </style>

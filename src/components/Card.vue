@@ -2,11 +2,11 @@
   <body>
   <main>
   <div class="ajustando">
+    <h1>Ofertas</h1>
     <div class="ajuste">
     <div class="ajuste2">
-    <h1>Ofertas</h1>
     <div class="search-bar">
-      <input v-model="searchTerm" @input="fetchDeals" type="text" placeholder="Pesquisar por título do jogo" />
+      <input v-model="searchTerm" @input="fetchDeals" type="text" placeholder="Procura" />
       <div class="search-icon">
       <img src="../assets/search_24px.svg" alt="Search Icon" />
     </div>
@@ -272,10 +272,75 @@ button{
     width: 380px;
     height: 50px;
 }
-
-@media only screen and (max-width: 600px) {
+ @media (max-width: 320px  ) {
     body {
       background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
+    }
+    h1{
+      display: flex;
+      justify-content: center;
+      color: #FFFFFF;
+      font-family: Roboto;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 21.09px;
+      margin-top: 22px;
+    }
+    select{
+      font-size: 14px;
+    }
+    .search-bar {
+      width: 174px;
+      margin-left: 8px;
+      /*height: 36px;*/
+    }
+
+    input {
+      width: 100%;
+    }
+
+    .filter {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 122px;
+      margin-right: 8px;
+      /*height: 68px;*/
+    }
+
+    select {
+      width: 100%;
+      margin-top: 10px; 
+    }
+
+    .deal-image img{
+      width: 304px;
+      height: 147px;
+    }
+    .deal-list {
+      grid-template-columns: 1fr;
+    }
+    .deal-details{
+    background: #0B1641;
+    width: 304px;
+    height: 47px;
+    margin-top: 7px
+    }
+    .deal-item {
+      width: 304px;
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+    .load-more-button{
+      width: 304px;
+    }
+
+  }
+
+  
+/*@media only screen and (max-width: 600px) {
+    body {
+      background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
+      width: 100%;
     }
 
     .search-bar {
@@ -293,13 +358,13 @@ button{
 
     select {
       width: 100%;
-      margin-top: 10px; /* Ajuste conforme necessário */
+      margin-top: 10px; /* Ajuste conforme necessário 
     }
 
     .ajuste {
       flex-direction: column;
       align-items: flex-start;
-      margin-bottom: 20px; /* Ajuste conforme necessário */
+      margin-bottom: 20px;  Ajuste conforme necessário 
     }
 
     .deal-list {
@@ -307,15 +372,32 @@ button{
     }
 
     .deal-item {
-      width: 100%;
+      width: 380px;
     }
   }
-/*@media (min-width: 1024px) {
+
+  @media (max-width: 768px) {
   main {
-    width: 1080px;
-    max-width: 1080px;
+    width: 960px;
+    max-width: 960px;
+  }
+
+  h1 {
+    text-align: start;
+    margin-top: 20px;
+  }
+
+  nav {
+    gap: 40%;
+    margin: 30px 0px;
+  }
+
+  .list {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
   }
 }*/
+
 </style>
 <script>
 export default {

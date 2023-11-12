@@ -14,8 +14,9 @@
 
 .navbar-img{
   display: flex;
-  margin-left: 130px;
+  /*margin-left: 130px;*/
 }
+
 @media (min-width: 768px){
 .navbar{
     display: flex;
@@ -25,7 +26,14 @@
   display: flex;
   margin-left: 620px;
 }
-}   
-
+}
+@media only screen and (max-width: 320px) {
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    }
+  }
 
 </style>
