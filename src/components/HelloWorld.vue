@@ -1,6 +1,6 @@
 <template>
   <body>
-  <div class="app-container">
+  <main>
   <div class="ajustando">
     <div class="ajuste">
     <div class="ajuste2">
@@ -39,7 +39,7 @@
       </div>                  
       <span class="porcetagem">-{{parseInt(calculateDiscount(deal).discountPercentage) }}%</span>
       </div>
-      <button @click.prevent="redirectToDealSite(deal.dealID)">Detalhes</button>
+      <button @click.prevent="openDealSite(deal.dealID)">Detalhes</button>
       </div>
     </div>
   </a>
@@ -47,123 +47,11 @@
     </ul>
 </div>
     <button @click="loadMoreDeals" class="load-more-button">Carregar mais</button>
-  </div>
+  </main>
   </body>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      deals: [],
-      searchTerm: "",
-      sortOption: "asc_price",
-      pageNumber: 0,
-      pageSize: 12,
-    };
-  },
-  computed: {
-    sortedDeals() {
-    return this.deals.slice().sort((a, b) => {
-      if (this.sortOption === "asc_price") {
-        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-      } else if (this.sortOption === "desc_price") {
-        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-      } else if (this.sortOption === "asc_title") {
-        return a.title.localeCompare(b.title);
-      } else if (this.sortOption === "desc_title") {
-        return b.title.localeCompare(a.title);
-      } else if (this.sortOption === "desc_discount") {
-        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
-      }
-    });
-  },
-},
-    sortedDeals() {
-      return this.deals.slice().sort((a, b) => {
-        if (this.sortOption === "asc_price") {
-          return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-        } else if (this.sortOption === "desc_price") {
-          return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-        } else if (this.sortOption === "asc_title") {
-          return a.title.localeCompare(b.title);
-        } else if (this.sortOption === "desc_title") {
-          return b.title.localeCompare(a.title);
-        }
-      });
-    },
-  
-  methods: {
-    sortedDeals() {
-    return this.deals.slice().sort((a, b) => {
-      if (this.sortOption === "asc_price") {
-        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-      } else if (this.sortOption === "desc_price") {
-        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-      } else if (this.sortOption === "asc_title") {
-        return a.title.localeCompare(b.title);
-      } else if (this.sortOption === "desc_title") {
-        return b.title.localeCompare(a.title);
-      } else if (this.sortOption === "desc_discount") {
-        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
-      }
-    });
-  },
-
-      calculateDiscount(deal) {
-      const regularPrice = parseFloat(deal.normalPrice);
-      const salePrice = parseFloat(deal.salePrice);
-
-      if (!isNaN(regularPrice) && !isNaN(salePrice)) {
-        const discountAmount = regularPrice - salePrice;
-        const discountPercentage = (discountAmount / regularPrice) * 100;
-
-        return {
-          discountAmount: discountAmount.toFixed(2),
-          discountPercentage: discountPercentage.toFixed(2),
-        };
-      } else {
-        return {
-          discountAmount: 0,
-          discountPercentage: 0,
-        };
-      }
-    },
-    redirectToDealSite(deal) {
-      window.open(deal.link, '_blank'); // Abre o site do item em uma nova guia
-    },
-
-    fetchDeals() {
-      this.pageNumber = 0;
-      this.loadDeals();
-    },
-    loadDeals() {
-      const apiUrl = `https://www.cheapshark.com/api/1.0/deals?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&storeID=1&onSale=1&AAA=1${
-        this.searchTerm ? `&title=${this.searchTerm}` : ""
-      }`;
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then((data) => {
-          if (this.pageNumber === 0) {
-            this.deals = data;
-          } else {
-            this.deals = this.deals.concat(data);
-          }
-        });
-    },
-    loadMoreDeals() {
-      this.pageNumber++;
-      this.loadDeals(); // Carrega mais dados e adiciona à lista de ofertas existente
-    },
-  },
-  mounted() {
-    this.loadDeals();
-  },
-};
-</script>
-
 <style scoped>
-
 
 h1{
   display: flex;
@@ -240,9 +128,6 @@ select {
   
 }
 
-.ajustando{
-}
-
 .ajuste{
     display: flex;
     margin-bottom: 37px;
@@ -255,7 +140,7 @@ select {
   flex-direction: column;
 }
 
-.app-container{
+main{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -387,5 +272,160 @@ button{
     width: 380px;
     height: 50px;
 }
+
+@media only screen and (max-width: 600px) {
+    body {
+      background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
+    }
+
+    .search-bar {
+      width: 100%;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    .filter {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    select {
+      width: 100%;
+      margin-top: 10px; /* Ajuste conforme necessário */
+    }
+
+    .ajuste {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 20px; /* Ajuste conforme necessário */
+    }
+
+    .deal-list {
+      grid-template-columns: 1fr;
+    }
+
+    .deal-item {
+      width: 100%;
+    }
+  }
+/*@media (min-width: 1024px) {
+  main {
+    width: 1080px;
+    max-width: 1080px;
+  }
+}*/
 </style>
+<script>
+export default {
+  data() {
+    return {
+      deals: [],
+      searchTerm: "",
+      sortOption: "asc_price",
+      pageNumber: 0,
+      pageSize: 12,
+    };
+  },
+  computed: {
+    sortedDeals() {
+    return this.deals.slice().sort((a, b) => {
+      if (this.sortOption === "asc_price") {
+        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
+      } else if (this.sortOption === "desc_price") {
+        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
+      } else if (this.sortOption === "asc_title") {
+        return a.title.localeCompare(b.title);
+      } else if (this.sortOption === "desc_title") {
+        return b.title.localeCompare(a.title);
+      } else if (this.sortOption === "desc_discount") {
+        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
+      }
+    });
+  },
+},
+    sortedDeals() {
+      return this.deals.slice().sort((a, b) => {
+        if (this.sortOption === "asc_price") {
+          return parseFloat(a.salePrice) - parseFloat(b.salePrice);
+        } else if (this.sortOption === "desc_price") {
+          return parseFloat(b.salePrice) - parseFloat(a.salePrice);
+        } else if (this.sortOption === "asc_title") {
+          return a.title.localeCompare(b.title);
+        } else if (this.sortOption === "desc_title") {
+          return b.title.localeCompare(a.title);
+        }
+      });
+    },
+  
+  methods: {
+    openDealSite(dealId) {
+    const redirectUrl = `https://www.cheapshark.com/redirect?dealID=${dealId}`;
+    window.open(redirectUrl, '_blank');
+    
+  },
+    sortedDeals() {
+    return this.deals.slice().sort((a, b) => {
+      if (this.sortOption === "asc_price") {
+        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
+      } else if (this.sortOption === "desc_price") {
+        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
+      } else if (this.sortOption === "asc_title") {
+        return a.title.localeCompare(b.title);
+      } else if (this.sortOption === "desc_title") {
+        return b.title.localeCompare(a.title);
+      } else if (this.sortOption === "desc_discount") {
+        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
+      }
+    });
+  },
+
+      calculateDiscount(deal) {
+      const regularPrice = parseFloat(deal.normalPrice);
+      const salePrice = parseFloat(deal.salePrice);
+
+      if (!isNaN(regularPrice) && !isNaN(salePrice)) {
+        const discountAmount = regularPrice - salePrice;
+        const discountPercentage = (discountAmount / regularPrice) * 100;
+
+        return {
+          discountAmount: discountAmount.toFixed(2),
+          discountPercentage: discountPercentage.toFixed(2),
+        };
+      } else {
+        return {
+          discountAmount: 0,
+          discountPercentage: 0,
+        };
+      }
+    },
+    fetchDeals() {
+      this.pageNumber = 0;
+      this.loadDeals();
+    },
+    loadDeals() {
+      const apiUrl = `https://www.cheapshark.com/api/1.0/deals?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&storeID=1&onSale=1&AAA=1${
+        this.searchTerm ? `&title=${this.searchTerm}` : ""
+      }`;
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          if (this.pageNumber === 0) {
+            this.deals = data;
+          } else {
+            this.deals = this.deals.concat(data);
+          }
+        });
+    },
+    loadMoreDeals() {
+      this.pageNumber++;
+      this.loadDeals(); // Carrega mais dados e adiciona à lista de ofertas existente
+    },
+  },
+  mounted() {
+    this.loadDeals();
+  },
+};
+</script>
 

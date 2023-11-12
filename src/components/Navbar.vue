@@ -16,4 +16,16 @@
   display: flex;
   margin-left: 130px;
 }
+@media (min-width: 768px){
+.navbar{
+    display: flex;
+    justify-content: start;
+}
+.navbar-img{
+  display: flex;
+  margin-left: 620px;
+}
+}   
+
+
 </style>
