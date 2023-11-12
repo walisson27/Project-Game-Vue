@@ -1,43 +1,55 @@
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+h1{
+    display: flex;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 42px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-top: 42px;
+  }
+  body{
+    background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
+  
+  }
+
+
+.error-message{
+    color: white;
+    text-align: center;
+    font-weight: 300;
+    font-size: 1.5rem;
+    margin-top: 20px;
 }
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
+
+.button-detalhes{
+    width: 116px;
+    height: 39px;
+    background-color:#C70160;;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 8px;
+    color: #fff;
+    /*margin-top: 14px;
+    margin-bottom: 16px;*/
+  }
+  
+  .load-more-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px auto;
+    margin-bottom: 44px;
+    background-color:#0B1641;
+    color: #FFFFFF;
+    font-weight: 100;
+    font-size: 16px;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    cursor: pointer;
+    width: 380px;
+    height: 50px;
 }

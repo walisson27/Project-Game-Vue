@@ -1,17 +1,17 @@
 <template>
   <body>
     <main>
-      <section class="ajustando">
+      <section class="section-main">
         <h1>Ofertas</h1>
-        <div class="ajuste">
-          <div class="ajuste2">
+        <section class="sub-section">
+          <head class="head-bar">
             <article class="search-bar">
               <input v-model="searchTerm" @input="fetchDeals" type="text" placeholder="Procura" />
               <div class="search-icon">
                 <img src="../assets/search_24px.svg" alt="Ícone de Busca" />
               </div>
             </article>
-          </div>
+          </head>
           <aside class="filter">
             <label for="sortOrder">Ordenar por:</label>
             <select v-model="sortOption" id="sortOrder">
@@ -22,9 +22,12 @@
               <option value="desc_title">Título do Jogo (Z-A)</option>
             </select>
           </aside>
+        </section>
+        <div v-if="errorMessage" class="error-message">
+          {{ errorMessage }}
         </div>
-        <ul class="deal-list">
-          <li v-for="deal in sortedDeals" :key="deal.dealID" class="deal-item">
+        <ul v-if="!errorMessage" class="deal-list">
+          <li v-for="deal in sortedDeals" :key="deal.dealID"  class="deal-item">
             <a :href="deal.link" target="_blank">
               <figure class="deal-image">
                 <img :src="deal.thumb" :alt="deal.title" />
@@ -32,14 +35,14 @@
               <div class="deal-details">
                 <h2 class="deal-title">{{ deal.title }}</h2>
                 <div class="deal-discount">
-                  <div class="valores">
-                    <div class="valores2">
+                  <div class="deal-ajust">
+                    <div class="sub-ajust">
                       <span class="preço-normal">${{ deal.normalPrice }}</span>
                       <span class="desconto">${{ Math.min(Math.abs(calculateDiscount(deal).discountAmount - deal.normalPrice, 100)).toFixed(2) }}</span>
                     </div>                  
                     <span class="porcentagem">-{{ parseInt(calculateDiscount(deal).discountPercentage) }}%</span>
                   </div>
-                  <button @click.prevent="openDealSite(deal.dealID)">Detalhes</button>
+                  <button class="button-detalhes" @click.prevent="openDealSite(deal.dealID)">Detalhes</button>
                 </div>
               </div>
             </a>
@@ -50,26 +53,139 @@
     </main>
   </body>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      deals: [],
+      searchTerm: "",
+      sortOption: "asc_price",
+      pageNumber: 0,
+      pageSize: 12,
+    };
+  },
+  computed: {
+    sortedDeals() {
+    return this.deals.slice().sort((a, b) => {
+      if (this.sortOption === "asc_price") {
+        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
+      } else if (this.sortOption === "desc_price") {
+        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
+      } else if (this.sortOption === "asc_title") {
+        return a.title.localeCompare(b.title);
+      } else if (this.sortOption === "desc_title") {
+        return b.title.localeCompare(a.title);
+      } else if (this.sortOption === "desc_discount") {
+        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
+      }
+    });
+  },
+},
+    sortedDeals() {
+      return this.deals.slice().sort((a, b) => {
+        if (this.sortOption === "asc_price") {
+          return parseFloat(a.salePrice) - parseFloat(b.salePrice);
+        } else if (this.sortOption === "desc_price") {
+          return parseFloat(b.salePrice) - parseFloat(a.salePrice);
+        } else if (this.sortOption === "asc_title") {
+          return a.title.localeCompare(b.title);
+        } else if (this.sortOption === "desc_title") {
+          return b.title.localeCompare(a.title);
+        }
+      });
+    },
+  
+  methods: {
+    openDealSite(dealId) {
+    const redirectUrl = `https://www.cheapshark.com/redirect?dealID=${dealId}`;
+    window.open(redirectUrl, '_blank');
+    
+  },
+    sortedDeals() {
+    return this.deals.slice().sort((a, b) => {
+      if (this.sortOption === "asc_price") {
+        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
+      } else if (this.sortOption === "desc_price") {
+        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
+      } else if (this.sortOption === "asc_title") {
+        return a.title.localeCompare(b.title);
+      } else if (this.sortOption === "desc_title") {
+        return b.title.localeCompare(a.title);
+      } else if (this.sortOption === "desc_discount") {
+        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
+      }
+    });
+  },
 
-<!-- Restante do código Vue.js -->
+      calculateDiscount(deal) {
+      const regularPrice = parseFloat(deal.normalPrice);
+      const salePrice = parseFloat(deal.salePrice);
+
+      if (!isNaN(regularPrice) && !isNaN(salePrice)) {
+        const discountAmount = regularPrice - salePrice;
+        const discountPercentage = (discountAmount / regularPrice) * 100;
+
+        return {
+          discountAmount: discountAmount.toFixed(2),
+          discountPercentage: discountPercentage.toFixed(2),
+        };
+      } else {
+        return {
+          discountAmount: 0,
+          discountPercentage: 0,
+        };
+      }
+    },
+     fetchDeals() {
+      this.pageNumber = 0;
+      this.loadDeals();
+    },
+    loadDeals() {
+      const apiUrl = `https://www.cheapshark.com/api/1.0/deals?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&storeID=1&onSale=1&AAA=1${
+        this.searchTerm ? `&title=${this.searchTerm}` : ""
+      }`;
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (this.pageNumber === 0) {
+            this.deals = data;
+          } else {
+            this.deals = this.deals.concat(data);
+          }
+
+          // Se não há resultados, exibe mensagem de erro
+          if (data.length === 0) {
+            this.errorMessage = "Nenhum resultado encontrado.";
+          } else {
+            this.errorMessage = null;
+          }
+        })
+        .catch((error) => {
+          console.error("Erro na requisição:", error.message);
+          this.errorMessage = "Erro ao buscar ofertas. Tente novamente mais tarde.";
+
+          this.deals = [];
+        });
+    },
+    loadMoreDeals() {
+      this.pageNumber++;
+      this.loadDeals(); // Carrega mais dados e adiciona à lista de ofertas existente
+    },
+  },
+  mounted() {
+    this.loadDeals();
+  },
+};
+</script>
 
 
 <style scoped>
 
-h1{
-  display: flex;
-  color: #FFFFFF;
-  font-family: Roboto;
-  font-size: 36px;
-  font-weight: 300;
-  line-height: 42px;
-  letter-spacing: 0em;
-  text-align: center;
-}
-body{
-  background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
-
-}
 .search-bar{
   display: flex;
   position: relative;
@@ -131,14 +247,14 @@ select {
   
 }
 
-.ajuste{
+.sub-section{
     display: flex;
     margin-bottom: 37px;
     justify-content: space-between;
     align-items: flex-end
 }
 
-.ajuste2{
+.head-bar{
   display: flex;
   flex-direction: column;
 }
@@ -148,10 +264,6 @@ main{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-ul{
-
 }
 
 .deal-list{
@@ -217,28 +329,17 @@ ul{
     text-decoration: line-through;
 }
 
-.valores{
+.deal-ajust{
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
 }
-.valores2{
+.sub-ajust{
   display: flex;
   flex-direction: column;
   margin-right: 10px;
 }
-button{
-  width: 116px;
-  height: 39px;
-  background-color:#C70160;;
-  font-size: 18px;
-  font-weight: 700;
-  text-transform: uppercase;
-  border-radius: 8px;
-  color: #fff;
-  /*margin-top: 14px;
-  margin-bottom: 16px;*/
-}
+
 .desconto{
   font-size: 1rem;
   line-height: 21px;
@@ -255,27 +356,10 @@ button{
     text-transform: uppercase;
     border-radius: 8px;
     width: 84px;  
-    height: 39px;
-    /*margin-top: 14px;*/
-  
+    height: 39px;  
 }
-.load-more-button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 40px auto;
-    background-color:#0B1641;
-    color: #FFFFFF;
-    font-weight: 100;
-    font-size: 16px;
-    border: none;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    cursor: pointer;
-    width: 380px;
-    height: 50px;
-}
- @media (max-width: 320px  ) {
+
+ @media (max-width: 1060px  ) {
     body {
       background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
     }
@@ -402,115 +486,3 @@ button{
 }*/
 
 </style>
-<script>
-export default {
-  data() {
-    return {
-      deals: [],
-      searchTerm: "",
-      sortOption: "asc_price",
-      pageNumber: 0,
-      pageSize: 12,
-    };
-  },
-  computed: {
-    sortedDeals() {
-    return this.deals.slice().sort((a, b) => {
-      if (this.sortOption === "asc_price") {
-        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-      } else if (this.sortOption === "desc_price") {
-        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-      } else if (this.sortOption === "asc_title") {
-        return a.title.localeCompare(b.title);
-      } else if (this.sortOption === "desc_title") {
-        return b.title.localeCompare(a.title);
-      } else if (this.sortOption === "desc_discount") {
-        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
-      }
-    });
-  },
-},
-    sortedDeals() {
-      return this.deals.slice().sort((a, b) => {
-        if (this.sortOption === "asc_price") {
-          return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-        } else if (this.sortOption === "desc_price") {
-          return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-        } else if (this.sortOption === "asc_title") {
-          return a.title.localeCompare(b.title);
-        } else if (this.sortOption === "desc_title") {
-          return b.title.localeCompare(a.title);
-        }
-      });
-    },
-  
-  methods: {
-    openDealSite(dealId) {
-    const redirectUrl = `https://www.cheapshark.com/redirect?dealID=${dealId}`;
-    window.open(redirectUrl, '_blank');
-    
-  },
-    sortedDeals() {
-    return this.deals.slice().sort((a, b) => {
-      if (this.sortOption === "asc_price") {
-        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-      } else if (this.sortOption === "desc_price") {
-        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-      } else if (this.sortOption === "asc_title") {
-        return a.title.localeCompare(b.title);
-      } else if (this.sortOption === "desc_title") {
-        return b.title.localeCompare(a.title);
-      } else if (this.sortOption === "desc_discount") {
-        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
-      }
-    });
-  },
-
-      calculateDiscount(deal) {
-      const regularPrice = parseFloat(deal.normalPrice);
-      const salePrice = parseFloat(deal.salePrice);
-
-      if (!isNaN(regularPrice) && !isNaN(salePrice)) {
-        const discountAmount = regularPrice - salePrice;
-        const discountPercentage = (discountAmount / regularPrice) * 100;
-
-        return {
-          discountAmount: discountAmount.toFixed(2),
-          discountPercentage: discountPercentage.toFixed(2),
-        };
-      } else {
-        return {
-          discountAmount: 0,
-          discountPercentage: 0,
-        };
-      }
-    },
-    fetchDeals() {
-      this.pageNumber = 0;
-      this.loadDeals();
-    },
-    loadDeals() {
-      const apiUrl = `https://www.cheapshark.com/api/1.0/deals?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&storeID=1&onSale=1&AAA=1${
-        this.searchTerm ? `&title=${this.searchTerm}` : ""
-      }`;
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then((data) => {
-          if (this.pageNumber === 0) {
-            this.deals = data;
-          } else {
-            this.deals = this.deals.concat(data);
-          }
-        });
-    },
-    loadMoreDeals() {
-      this.pageNumber++;
-      this.loadDeals(); // Carrega mais dados e adiciona à lista de ofertas existente
-    },
-  },
-  mounted() {
-    this.loadDeals();
-  },
-};
-</script>
-
