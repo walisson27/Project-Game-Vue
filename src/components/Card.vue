@@ -1,55 +1,58 @@
 <template>
   <body>
-  <main>
-  <div class="ajustando">
-    <h1>Ofertas</h1>
-    <div class="ajuste">
-    <div class="ajuste2">
-    <div class="search-bar">
-      <input v-model="searchTerm" @input="fetchDeals" type="text" placeholder="Procura" />
-      <div class="search-icon">
-      <img src="../assets/search_24px.svg" alt="Search Icon" />
-    </div>
-    </div>
-    </div>
-    <div class="filter">
-      <label  for="sortOrder">Ordenar por:</label>
-      <select v-model="sortOption" id="sortOrder">
-        <option value="desc_discount">% de Desconto</option>
-        <option value="asc_price">Menor Valor</option>
-        <option value="desc_price">Maior Valor</option>
-        <option value="asc_title">Título do Jogo (A-Z)</option>
-        <option value="desc_title">Título do Jogo (Z-A)</option>
-      </select>
-    </div>
-  </div>
-    <ul class="deal-list">
-      <li v-for="deal in sortedDeals" :key="deal.dealID" class="deal-item">
-      <a :href="deal.link" target="_blank">
-    <div class="deal-image">
-      <img :src="deal.thumb" :alt="deal.title" />
-    </div>
-    <div class="deal-details">
-      <span class="deal-title">{{ deal.title }}</span>
-      <div class="deal-discount">
-      <div class="valores">
-      <div class="valores2">
-      <span class="preço-normal">${{ deal.normalPrice }}</span>
-      <span class="desconto">${{ Math.min(Math.abs(calculateDiscount(deal).discountAmount - deal.normalPrice, 100)).toFixed(2) }}</span>
-      </div>                  
-      <span class="porcetagem">-{{parseInt(calculateDiscount(deal).discountPercentage) }}%</span>
-      </div>
-      <button @click.prevent="openDealSite(deal.dealID)">Detalhes</button>
-      </div>
-    </div>
-  </a>
-</li>
-    </ul>
-</div>
-    <button @click="loadMoreDeals" class="load-more-button">Carregar mais</button>
-  </main>
+    <main>
+      <section class="ajustando">
+        <h1>Ofertas</h1>
+        <div class="ajuste">
+          <div class="ajuste2">
+            <article class="search-bar">
+              <input v-model="searchTerm" @input="fetchDeals" type="text" placeholder="Procura" />
+              <div class="search-icon">
+                <img src="../assets/search_24px.svg" alt="Ícone de Busca" />
+              </div>
+            </article>
+          </div>
+          <aside class="filter">
+            <label for="sortOrder">Ordenar por:</label>
+            <select v-model="sortOption" id="sortOrder">
+              <option value="desc_discount">% de Desconto</option>
+              <option value="asc_price">Menor Valor</option>
+              <option value="desc_price">Maior Valor</option>
+              <option value="asc_title">Título do Jogo (A-Z)</option>
+              <option value="desc_title">Título do Jogo (Z-A)</option>
+            </select>
+          </aside>
+        </div>
+        <ul class="deal-list">
+          <li v-for="deal in sortedDeals" :key="deal.dealID" class="deal-item">
+            <a :href="deal.link" target="_blank">
+              <figure class="deal-image">
+                <img :src="deal.thumb" :alt="deal.title" />
+              </figure>
+              <div class="deal-details">
+                <h2 class="deal-title">{{ deal.title }}</h2>
+                <div class="deal-discount">
+                  <div class="valores">
+                    <div class="valores2">
+                      <span class="preço-normal">${{ deal.normalPrice }}</span>
+                      <span class="desconto">${{ Math.min(Math.abs(calculateDiscount(deal).discountAmount - deal.normalPrice, 100)).toFixed(2) }}</span>
+                    </div>                  
+                    <span class="porcentagem">-{{ parseInt(calculateDiscount(deal).discountPercentage) }}%</span>
+                  </div>
+                  <button @click.prevent="openDealSite(deal.dealID)">Detalhes</button>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <button @click="loadMoreDeals" class="load-more-button">Carregar mais</button>
+    </main>
   </body>
 </template>
+
+<!-- Restante do código Vue.js -->
+
 
 <style scoped>
 
@@ -242,7 +245,7 @@ button{
   font-weight: 700;
   text-align: right;
 }
-.porcetagem{
+.porcentagem{
     display: flex;
     align-items: center;
     justify-content: center;
