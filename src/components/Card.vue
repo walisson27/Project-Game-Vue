@@ -359,7 +359,7 @@ main{
     height: 39px;  
 }
 
- @media (max-width: 1060px  ) {
+ @media (max-width: 1194px  ) {
     body {
       background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
     }
