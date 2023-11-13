@@ -7,7 +7,7 @@
 </h4>
 
 <p align="center">
-  <a href="">Pagina do Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="https://project-game-7.vercel.app/">Pagina do Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-instalação">Instalação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   
 </p>
@@ -17,5 +17,5 @@
 yarn 
 yarn dev
 ```
-Assim que o processo terminar, automaticamente será aberta no seu navegador a página `http://localhost:3000/`.
+Assim que o processo terminar, automaticamente será aberta no seu navegador a página `http://localhost:5173/`.
 
