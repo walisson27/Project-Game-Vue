@@ -42,7 +42,7 @@
                     </div>                  
                     <span class="porcentagem">-{{ parseInt(calculateDiscount(deal).discountPercentage) }}%</span>
                   </div>
-                  <button class="button-detalhes" @click.prevent="openDealSite(deal.dealID)">Detalhes</button>
+                  <a class="detalhes" @click.prevent="openDealSite(deal.dealID)">Detalhes</a>
                 </div>
               </div>
             </a>
@@ -59,7 +59,7 @@ export default {
     return {
       deals: [],
       searchTerm: "",
-      sortOption: "asc_price",
+      sortOption: "desc_discount",
       pageNumber: 0,
       pageSize: 12,
     };
@@ -81,40 +81,12 @@ export default {
     });
   },
 },
-    sortedDeals() {
-      return this.deals.slice().sort((a, b) => {
-        if (this.sortOption === "asc_price") {
-          return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-        } else if (this.sortOption === "desc_price") {
-          return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-        } else if (this.sortOption === "asc_title") {
-          return a.title.localeCompare(b.title);
-        } else if (this.sortOption === "desc_title") {
-          return b.title.localeCompare(a.title);
-        }
-      });
-    },
-  
+
   methods: {
     openDealSite(dealId) {
     const redirectUrl = `https://www.cheapshark.com/redirect?dealID=${dealId}`;
     window.open(redirectUrl, '_blank');
     
-  },
-    sortedDeals() {
-    return this.deals.slice().sort((a, b) => {
-      if (this.sortOption === "asc_price") {
-        return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-      } else if (this.sortOption === "desc_price") {
-        return parseFloat(b.salePrice) - parseFloat(a.salePrice);
-      } else if (this.sortOption === "asc_title") {
-        return a.title.localeCompare(b.title);
-      } else if (this.sortOption === "desc_title") {
-        return b.title.localeCompare(a.title);
-      } else if (this.sortOption === "desc_discount") {
-        return this.calculateDiscount(b).discountPercentage - this.calculateDiscount(a).discountPercentage;
-      }
-    });
   },
 
       calculateDiscount(deal) {
@@ -158,7 +130,7 @@ export default {
             this.deals = this.deals.concat(data);
           }
 
-          // Se não há resultados, exibe mensagem de erro
+          // Se não tiver resultados,  mensagem de erro
           if (data.length === 0) {
             this.errorMessage = "Nenhum resultado encontrado.";
           } else {
@@ -174,7 +146,7 @@ export default {
     },
     loadMoreDeals() {
       this.pageNumber++;
-      this.loadDeals(); // Carrega mais dados e adiciona à lista de ofertas existente
+      this.loadDeals(); // Carrega mais dados 
     },
   },
   mounted() {
@@ -214,7 +186,6 @@ input {
   color: rgba(255, 255, 255, 0.5);
 }
 
-
 .filter {
     display: flex;
     text-align: center;
@@ -243,7 +214,7 @@ select {
   line-height: 21px;
   letter-spacing: 0em;
   text-align: left;
-
+  cursor: pointer;
   
 }
 
