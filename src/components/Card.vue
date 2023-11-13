@@ -81,27 +81,23 @@ export default {
     });
   },
 },
-
-  methods: {
+methods: {
     openDealSite(dealId) {
     const redirectUrl = `https://www.cheapshark.com/redirect?dealID=${dealId}`;
     window.open(redirectUrl, '_blank');
     
   },
-
-      calculateDiscount(deal) {
-      const regularPrice = parseFloat(deal.normalPrice);
-      const salePrice = parseFloat(deal.salePrice);
-
+    calculateDiscount(deal) {
+    const regularPrice = parseFloat(deal.normalPrice);
+    const salePrice = parseFloat(deal.salePrice);
       if (!isNaN(regularPrice) && !isNaN(salePrice)) {
         const discountAmount = regularPrice - salePrice;
         const discountPercentage = (discountAmount / regularPrice) * 100;
-
         return {
           discountAmount: discountAmount.toFixed(2),
           discountPercentage: discountPercentage.toFixed(2),
         };
-      } else {
+    } else {
         return {
           discountAmount: 0,
           discountPercentage: 0,
@@ -350,26 +346,20 @@ main{
     .search-bar {
       width: 174px;
       margin-left: 8px;
-      /*height: 36px;*/
     }
-
     input {
       width: 100%;
     }
-
     .filter {
       flex-direction: column;
       align-items: flex-start;
       width: 122px;
       margin-right: 8px;
-      /*height: 68px;*/
     }
-
     select {
       width: 100%;
       margin-top: 10px; 
     }
-
     .deal-image img{
       width: 304px;
       height: 147px;
@@ -393,67 +383,4 @@ main{
     }
 
   }
-
-  
-/*@media only screen and (max-width: 600px) {
-    body {
-      background: linear-gradient(45deg, #0b1641 0%, #c70160 100%);
-      width: 100%;
-    }
-
-    .search-bar {
-      width: 100%;
-    }
-
-    input {
-      width: 100%;
-    }
-
-    .filter {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    select {
-      width: 100%;
-      margin-top: 10px; /* Ajuste conforme necessário 
-    }
-
-    .ajuste {
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 20px;  Ajuste conforme necessário 
-    }
-
-    .deal-list {
-      grid-template-columns: 1fr;
-    }
-
-    .deal-item {
-      width: 380px;
-    }
-  }
-
-  @media (max-width: 768px) {
-  main {
-    width: 960px;
-    max-width: 960px;
-  }
-
-  h1 {
-    text-align: start;
-    margin-top: 20px;
-  }
-
-  nav {
-    gap: 40%;
-    margin: 30px 0px;
-  }
-
-  .list {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-  }
-}*/
-
 </style>

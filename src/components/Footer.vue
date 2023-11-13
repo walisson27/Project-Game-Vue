@@ -72,7 +72,6 @@ a{
     text-decoration: none;
     color: white
 }
-
 @media (min-width: 767px) {
   .container {
     margin: 0 auto;
@@ -87,7 +86,7 @@ a{
     gap: 20px;
   }
 }
-@media only screen and (max-width: 320px) {
+@media only screen and (min-width: 320px) {
 
   ul {
     gap: 8px;
